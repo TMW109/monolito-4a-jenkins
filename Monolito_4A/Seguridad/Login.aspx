@@ -50,7 +50,7 @@
                         <div class="login-box">
 
                             <div class="login-header">
-                                <img src="../imagen/imglogo.png" class="small-logo" />
+                                <img src="<%= ResolveUrl("~/imagen/imglogo.png") %>" class="small-logo" />
                                 <div>
                                     <h2>Iniciar sesión</h2>
                                     <p>Control de acceso</p>
