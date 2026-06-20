@@ -41,20 +41,24 @@ pipeline {
             }
         }
 
-        stage('Publicar aplicación') {
+               stage('Publicar aplicación') {
             steps {
                 bat 'if exist "%PUBLISH_DIR%" rmdir /S /Q "%PUBLISH_DIR%"'
-                bat '"%MSBUILD%" "%WEB_PROJECT%" /p:Configuration=%CONFIGURATION% /p:DeployOnBuild=true /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:publishUrl="%PUBLISH_DIR%"'
+                bat 'mkdir "%PUBLISH_DIR%"'
+
+                bat '"%MSBUILD%" "%WEB_PROJECT%" /p:Configuration=%CONFIGURATION% /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:PublishUrl="%PUBLISH_DIR%\\"'
+
+                bat 'echo Contenido generado en carpeta de publicacion:'
+                bat 'dir "%PUBLISH_DIR%"'
             }
         }
 
         stage('Desplegar en IIS') {
             steps {
                 bat 'if not exist "%IIS_PATH%" mkdir "%IIS_PATH%"'
-                bat 'xcopy "%PUBLISH_DIR%\\*" "%IIS_PATH%\\" /E /Y /I'
+                bat 'robocopy "%PUBLISH_DIR%" "%IIS_PATH%" /MIR & if %ERRORLEVEL% LEQ 7 exit /B 0'
             }
         }
-
         stage('Probar aplicación en IIS') {
             steps {
                 bat 'powershell -Command "try { $r = Invoke-WebRequest -Uri \\"%TEST_URL%\\" -UseBasicParsing -TimeoutSec 20; Write-Host \\"Estado HTTP:\\" $r.StatusCode; if ($r.StatusCode -ge 200 -and $r.StatusCode -lt 500) { exit 0 } else { exit 1 } } catch { Write-Host $_; exit 1 }"'
