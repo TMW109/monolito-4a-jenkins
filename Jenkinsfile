@@ -54,7 +54,7 @@ pipeline {
         stage('Desplegar en IIS') {
             steps {
                 bat 'if not exist "%IIS_PATH%" mkdir "%IIS_PATH%"'
-                bat 'robocopy "%PUBLISH_DIR%" "%IIS_PATH%" /MIR & if %ERRORLEVEL% LEQ 7 exit /B 0'
+                bat 'robocopy "%PUBLISH_DIR%" "%IIS_PATH%" /E /R:2 /W:2 & if %ERRORLEVEL% LEQ 7 exit /B 0'
             }
         }
         stage('Probar aplicación en IIS') {
