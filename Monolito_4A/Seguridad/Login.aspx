@@ -29,7 +29,7 @@
                             <span>requiem</span>
                         </h1>
 
-                        <p class="subtitle">Acceso restringido · Umbrella Security</p>
+                        <p class="subtitle">Acceso restringido · Umbrella Security||Jenkins</p>
 
                         <div class="cards">
                             <div class="card card-one">
