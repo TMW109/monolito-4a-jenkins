@@ -45,9 +45,7 @@ pipeline {
             steps {
                 bat 'if exist "%PUBLISH_DIR%" rmdir /S /Q "%PUBLISH_DIR%"'
                 bat 'mkdir "%PUBLISH_DIR%"'
-
-                bat '"%MSBUILD%" "%WEB_PROJECT%" /p:Configuration=%CONFIGURATION% /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:PublishUrl="%PUBLISH_DIR%\\"'
-
+		bat '"%MSBUILD%" "%WEB_PROJECT%" /p:Configuration=%CONFIGURATION% /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:PublishUrl="%PUBLISH_DIR%"'
                 bat 'echo Contenido generado en carpeta de publicacion:'
                 bat 'dir "%PUBLISH_DIR%"'
             }
